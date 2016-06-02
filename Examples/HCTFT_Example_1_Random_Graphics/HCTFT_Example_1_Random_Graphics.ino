@@ -54,7 +54,8 @@ const PROGMEM byte Tiny_Logo_Resistor[] =
 /* Uncomment one of the lines below to to create an instance of the TFT library 
    to match your screen */
 //HCTFT HCTFT(ELECFREAKS_2_4_WITH_TFT01_UNO); // Elecfreaks 2.4" TFT (HCARDU0083)
-//HCTFT HCTFT(ELECFREAKS_3_2_WITH_TFT01_MEGA); // Elecfreaks 3.2" TFT (HCARDU0097)
+//HCTFT HCTFT(ELECFREAKS_3_2_WITH_TFT01_MEGA); // Elecfreaks 3.2" TFT with ILI9481 contoller (HCARDU0097)
+//HCTFT HCTFT(ELECFREAKS_3_2_9341_WITH_TFT01_MEGA); // Elecfreaks 3.2" TFT with ILI9341 controller (HCARDU0097)
 //HCTFT HCTFT(MCUFRIEND_2_4_UNO); // McuFriend 2_4" TFT (HCARDU0095)
 //HCTFT HCTFT(MCUFRIEND_3_5_MEGA); // Mcufriend 3.5" TFT (HCARDU0096)
 

@@ -1,18 +1,19 @@
 /* FILE:    HCTFT.cpp
-   DATE:    15/06/15
-   VERSION: 0.1
+   DATE:    02/06/16
+   VERSION: 0.2
    AUTHOR:  Andrew Davies
 
 15/06/15 version 0.1: Original version
-
+02/06/16 version 0.2: Updated to include Elec Freaks 3.2" display with ILI9341 contoller
    
    
 Library for TFT screens. Currently supported screens:
 
 MCUFriend ILI9481 based 3.5" TFT screen for Mega (MCUFRIEND_3_5_MEGA)
-Elec Freaks 3.2" TFT screen for Mega (ELECFREAKS_3_2_WITH_TFT01_MEGA)
+Elec Freaks 3.2" TFT screen with ILI9481 Contoller for Mega (ELECFREAKS_3_2_WITH_TFT01_MEGA)
 MCUFriend 2_4" TFT screen for UNO (MCUFRIEND_2_4_UNO)
 Elec Freaks 2_4" TFT screen for UNO (ELECFREAKS_2_4_WITH_TFT01_UNO)
+Elec Freaks 3.2" TFT screen with ILI9341 Contoller for Mega (ELECFREAKS_3_2_WITH_TFT01_MEGA)
 
 You may copy, alter and reuse this code in any way you like, but please leave
 reference to HobbyComponents.com in your comments if you redistribute this code.
@@ -35,25 +36,25 @@ REASON WHATSOEVER.
 
 
 /* Control pin mappings for each display type (see MemorySave.h for order) */
-const PROGMEM byte DEF_WR[] = {39,39,18,15};
-const PROGMEM byte DEF_CS[] = {40,40,17,17};
-const PROGMEM byte DEF_DC[] = {38,38,19,16};
-const PROGMEM byte DEF_RST[] = {41,41,16,18};
-const PROGMEM byte DEF_SDCS[] = {53,53,10,10};
+const PROGMEM byte DEF_WR[] = {39,39,18,15,39};
+const PROGMEM byte DEF_CS[] = {40,40,17,17,40};
+const PROGMEM byte DEF_DC[] = {38,38,19,16,38};
+const PROGMEM byte DEF_RST[] = {41,41,16,18,41};
+const PROGMEM byte DEF_SDCS[] = {53,53,10,10,53};
 
 /* Screen resolutions (see MemorySave.h for order) */
-const PROGMEM unsigned int MAX_X[] = {479,319,319,319};
-const PROGMEM unsigned int MAX_Y[] = {319,239,239,239};
+const PROGMEM unsigned int MAX_X[] = {479,319,319,319, 319};
+const PROGMEM unsigned int MAX_Y[] = {319,239,239,239, 239};
 
 /* Port used for high and low bytes of data bus (see MemorySave.h for order) */
-volatile byte *DPH[] = {&PORTA,&PORTA,&PORTD,&PORTD};
-volatile byte *DPL[] = {&PORTC,&PORTC,&PORTD,&PORTB};
-volatile byte *DDDRH[] = {&DDRA,&DDRA,&DDRD,&DDRD};
-volatile byte *DDDRL[] = {&DDRC,&DDRC,&DDRD,&DDRB};
+volatile byte *DPH[] = {&PORTA,&PORTA,&PORTD,&PORTD,&PORTA};
+volatile byte *DPL[] = {&PORTC,&PORTC,&PORTD,&PORTB,&PORTC};
+volatile byte *DDDRH[] = {&DDRA,&DDRA,&DDRD,&DDRD,&DDRA};
+volatile byte *DDDRL[] = {&DDRC,&DDRC,&DDRD,&DDRB,&DDRC};
 
 /* Mask for high and low bytes of data bus (see MemorySave.h for order) */
-const PROGMEM byte DHMASK[] = {0xFF,0xFF,0xFF,0xFC};
-const PROGMEM byte DLMASK[] = {0xFF,0xFF,0xFF,0xF3};
+const PROGMEM byte DHMASK[] = {0xFF,0xFF,0xFF,0xFC,0xFF};
+const PROGMEM byte DLMASK[] = {0xFF,0xFF,0xFF,0xF3,0xFF};
 
 
 
@@ -420,6 +421,61 @@ void HCTFT::Init(void)
 			_CommandOut(0x29);
 			_CommandOut(0x2C);		
 		#endif
+		
+		#ifdef ELECFREAKS_3_2_9341_WITH_TFT01_MEGA 
+		case(ELECFREAKS_3_2_9341_WITH_TFT01_MEGA): //(ILI9481) Parameters referenced from UTFT library
+			_CommandOut(0x11); //Exit sleep mode
+			delay(20);
+
+
+			 _CommandOut(0xD0); //Power setting
+			 _DataOut(0x07); // reference voltage ratio
+			 _DataOut(0x42);// reference voltage step up / start step up
+			 _DataOut(0x18); //Set VRH = 4.875V
+
+			 _CommandOut(0xD1); //Set VCOMH voltage
+			 _DataOut(0x00);
+			 _DataOut(0x07);
+			 _DataOut(0x10);
+
+			 _CommandOut(0xD2); //Power_Setting for Normal Mode 
+			 _DataOut(0x01);
+			 _DataOut(0x02);
+
+			 _CommandOut(0xC0); //Panel Driving Setting
+			 _DataOut(0x10);
+			 _DataOut(0x3B);
+			 _DataOut(0x00);
+			 _DataOut(0x02);
+			 _DataOut(0x11);
+
+			 _CommandOut(0xC5); //Frame Rate and Inversion Control 
+			 _DataOut(0x03);
+
+			 _CommandOut(0xC8); //Gamma Setting 
+			 _DataOut(0x00);
+			 _DataOut(0x32);
+			 _DataOut(0x36);
+			 _DataOut(0x45);
+			 _DataOut(0x06);
+			 _DataOut(0x16);
+			 _DataOut(0x37);
+			 _DataOut(0x75);
+			 _DataOut(0x77);
+			 _DataOut(0x54);
+			 _DataOut(0x0C);
+			 _DataOut(0x00);
+			
+			_CommandOut(0x36); //Set_address_mode
+			_DataOut(0xEA); //Horizontal flip, BGR order
+
+			_CommandOut(0x3A); //Set_pixel_format
+			_DataOut(0x55); //16bit/pixel (65,536 colours) 
+
+			delay(100);
+			_CommandOut(0x29); //Set_display_on 
+			break;
+		#endif
 
 	}		
 	
@@ -630,7 +686,6 @@ void HCTFT::Clear(void)
 	_FGB = _BGB;
 
 	Rect(0, 0, pgm_read_word_near(&MAX_X[_Display]), pgm_read_word_near(&MAX_Y[_Display]), SOLID);
-
 	_FGR = TempFGR;
 	_FGG = TempFGG;
 	_FGB = TempFGB;	
@@ -1140,6 +1195,22 @@ void HCTFT::_SetWriteArea(unsigned int X1, unsigned int Y1, unsigned int X2, uns
 				_DataOut((XMAX - X1) >>8);
 				_DataOut(XMAX - X1);
 				_CommandOut(0x2C); //write
+				break;
+			#endif
+			
+			#ifdef ELECFREAKS_3_2_9341_WITH_TFT01_MEGA
+			case(ELECFREAKS_3_2_9341_WITH_TFT01_MEGA):		
+				_CommandOut(0x2a); 
+				_DataOut(X1>>8);
+				_DataOut(X1);
+				_DataOut(X2>>8);
+				_DataOut(X2);
+				_CommandOut(0x2b); 
+				_DataOut(Y1>>8);
+				_DataOut(Y1);
+				_DataOut(Y2>>8);
+				_DataOut(Y2);
+				_CommandOut(0x2c); 
 				break;
 			#endif
 		}	

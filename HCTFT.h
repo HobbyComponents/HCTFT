@@ -1,18 +1,19 @@
 /* FILE:    HCTFT.h
-   DATE:    15/06/15
-   VERSION: 0.1
+   DATE:    02/06/16
+   VERSION: 0.2
    AUTHOR:  Andrew Davies
 
 15/06/15 version 0.1: Original version
-
+02/06/16 version 0.2: Updated to include Elec Freaks 3.2" display with ILI9341 contoller
    
    
 Library header for TFT screens. Currently supported screens:
 
 MCUFriend ILI9481 based 3.5" TFT screen for Mega (MCUFRIEND_3_5_MEGA)
-Elec Freaks 3.2" TFT screen for Mega (ELECFREAKS_3_2_WITH_TFT01_MEGA)
+Elec Freaks 3.2" TFT screen with ILI9481 Contoller for Mega (ELECFREAKS_3_2_WITH_TFT01_MEGA)
 MCUFriend 2_4" TFT screen for UNO (MCUFRIEND_2_4_UNO)
 Elec Freaks 2_4" TFT screen for UNO (ELECFREAKS_2_4_WITH_TFT01_UNO)
+Elec Freaks 3.2" TFT screen with ILI9341 Contoller for Mega (ELECFREAKS_3_2_WITH_TFT01_MEGA)
 
 You may copy, alter and reuse this code in any way you like, but please leave
 reference to HobbyComponents.com in your comments if you redistribute this code.
