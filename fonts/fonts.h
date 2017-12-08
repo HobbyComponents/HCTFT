@@ -16,11 +16,11 @@ typedef struct _font_info
 }FONT_INFO; 
 
 
-#include "Fonts/Terminal_8pt.h"
-#include "Fonts/MedProp_11pt.h"
-#include "Fonts/LargeProp_25pt.h"
-#include "Fonts/LCDLarge_24pt.h"
-#include "Fonts/LCDLarge_52pt.h"
+#include "fonts/Terminal_8pt.h"
+#include "fonts/MedProp_11pt.h"
+#include "fonts/LargeProp_25pt.h"
+#include "fonts/LCDLarge_24pt.h"
+#include "fonts/LCDLarge_52pt.h"
 
 
 #endif
